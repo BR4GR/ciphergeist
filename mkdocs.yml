@@ -10,6 +10,7 @@ copyright: Maintained by <a href="https://BR4GR.com">BR4GR</a>.
 nav:
   - Home: index.md
   - Modules: modules.md
+  - Xorxer: xorxer.md
 plugins:
   - search
   - mkdocstrings:

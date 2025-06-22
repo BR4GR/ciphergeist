@@ -60,8 +60,8 @@ def test_single_byte_xor_invalid_key():
     """Test that single_byte_xor raises ValueError for invalid key."""
     plaintext = b"Hello, World!"
 
-    with pytest.raises(ValueError, match="Key must be int (0-255)"):
+    with pytest.raises(ValueError, match="Key must be int \\(0-255\\)"):
         single_byte_xor(plaintext, 256)
 
-    with pytest.raises(ValueError, match="Key must be int (0-255)"):
+    with pytest.raises(ValueError, match="Key must be int \\(0-255\\)"):
         single_byte_xor(plaintext, -1)

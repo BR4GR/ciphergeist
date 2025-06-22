@@ -21,10 +21,13 @@ class Guess:
 
 def score_text(text: bytes) -> float:
     """Score a byte string based on letter frequency analysis.
+
     This function compares the frequency of letters in the text against
     a predefined frequency distribution of lowercase letters in English text.
+
     Args:
         text (bytes): The byte string to score.
+
     Returns:
         float: The score representing the difference in letter frequencies.
             A lower score indicates a closer match to expected frequencies.
@@ -45,14 +48,36 @@ def score_text(text: bytes) -> float:
 
 
 def fixed_xor(a: bytes, b: bytes) -> bytes:
-    """Perform a fixed XOR operation on two byte strings."""
+    """Perform a fixed XOR operation on two byte strings.
+
+    Args:
+        a (bytes): The first byte string.
+        b (bytes): The second byte string.
+
+    Returns:
+        bytes: The result of the XOR operation.
+
+    Raises:
+        ValueError: If the input byte strings are of different lengths.
+    """
     if len(a) != len(b):
         raise ValueError("Input must be of the same length.")
     return bytes(x ^ y for x, y in zip(a, b))
 
 
 def single_byte_xor(input_bytes: bytes, key: int) -> bytes:
-    """Perform a single-byte XOR operation on a byte string."""
+    """Perform a single-byte XOR operation on a byte string.
+
+    Args:
+        input_bytes (bytes): The byte string to be XORed.
+        key (int): The single-byte key to XOR with (0-255).
+
+    Returns:
+        bytes: The result of the XOR operation.
+
+    Raises:
+        ValueError: If the key is not an integer in the range 0-255.
+    """
     if not (0 <= key <= 255):
         raise ValueError("Key must be int (0-255).")
     return bytes(b ^ key for b in input_bytes)
@@ -60,10 +85,13 @@ def single_byte_xor(input_bytes: bytes, key: int) -> bytes:
 
 def guess_single_key_xor(ciphertext: bytes) -> Guess:
     """Guess the single-byte XOR key for a given ciphertext.
-    This function iterates through all possible single-byte keys (0-255)
+
+    Iterates through all possible single-byte keys (0-255)
     and scores the resulting plaintext using letter frequency analysis.
+
     Args:
         ciphertext (bytes): The ciphertext to analyze.
+
     Returns:
         Guess: The best guess containing the key, plaintext, and score.
     """
@@ -75,12 +103,15 @@ def guess_single_key_xor(ciphertext: bytes) -> Guess:
 
 
 def quick_guess_single_byte_xor(ciphertext: bytes) -> Guess:
-    """Quickly guess a single-byte XOR key using letter frequency analysis.
-    This function assumes the most common byte in the ciphertext corresponds to
+    """Quickly guess a single-byte XOR key.
+
+    Using letter frequency analysis.
+    Asuming the most common byte in the ciphertext corresponds to
     the most common letter in English text (e.g., 'e', 't', 'a').
 
     Args:
         ciphertext (bytes): The ciphertext to analyze.
+
     Returns:
         list[tuple[float, int, bytes]]: A sorted list of tuples containing the score,
             key, and plaintext for each candidate key.
