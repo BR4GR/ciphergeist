@@ -46,3 +46,22 @@ def test_quick_guess_single_byte_xor_2():
     ciphertext = single_byte_xor(plaintext, key)
     guess = quick_guess_single_byte_xor(ciphertext)
     assert guess.key == key, "Expected key 42 for the quick guess."
+
+
+def test_score_text_empty_input():
+    """Test that score_text raises ValueError for empty input."""
+    with pytest.raises(ValueError, match="Input text cannot be empty"):
+        from ciphergeist.operations.xorxer import score_text
+
+        score_text(b"")
+
+
+def test_single_byte_xor_invalid_key():
+    """Test that single_byte_xor raises ValueError for invalid key."""
+    plaintext = b"Hello, World!"
+
+    with pytest.raises(ValueError, match="Key must be int (0-255)"):
+        single_byte_xor(plaintext, 256)
+
+    with pytest.raises(ValueError, match="Key must be int (0-255)"):
+        single_byte_xor(plaintext, -1)
