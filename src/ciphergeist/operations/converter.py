@@ -1,7 +1,7 @@
 import base64
 
 
-def convert_hex_to_base64(hex_string):
+def convert_hex_to_base64(hex_string: str) -> str:
     """
     Convert a hexadecimal string to a Base64 encoded string.
 

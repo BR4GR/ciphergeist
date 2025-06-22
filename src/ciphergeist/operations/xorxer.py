@@ -1,22 +1,26 @@
 from collections import Counter
 from dataclasses import dataclass
-from typing import Optional
 
 from ciphergeist.frequencies.lowercase import lowercase_frequencies
 
 
 @dataclass(order=True)
 class Guess:
-    score: float = float("inf")
-    key: Optional[int] = None
-    ciphertext: Optional[bytes] = None
-    plaintext: Optional[bytes] = None
+    score: float
+    key: int
+    ciphertext: bytes
+    plaintext: bytes
+
+    def __init__(self, ciphertext: bytes, key: int):
+        self.ciphertext = ciphertext
+        self.key = key
+        self.plaintext = single_byte_xor(ciphertext, key)
+        self.score = score_text(self.plaintext)
 
     @classmethod
-    def score_key(cls, ciphertext, key):
-        plaintext = single_byte_xor(ciphertext, key)
-        score = score_text(plaintext)
-        return cls(score, key, ciphertext, plaintext)
+    def empty(cls) -> "Guess":
+        """Create an empty guess with infinite score for comparison."""
+        return cls(b"", 0)
 
 
 def score_text(text: bytes) -> float:
@@ -34,7 +38,7 @@ def score_text(text: bytes) -> float:
     """
     if len(text) == 0:
         raise ValueError("Input text cannot be empty")
-    counts_text = Counter()
+    counts_text: Counter[str] = Counter()
     for letter in lowercase_frequencies:
         counts_text[letter] = text.count(letter.encode())
     total = sum(counts_text.values())
@@ -95,9 +99,9 @@ def guess_single_key_xor(ciphertext: bytes) -> Guess:
     Returns:
         Guess: The best guess containing the key, plaintext, and score.
     """
-    best_guess = Guess()
+    best_guess = Guess.empty()
     for key in range(256):
-        current_guess = Guess.score_key(ciphertext, key)
+        current_guess = Guess(ciphertext, key)
         best_guess = min(best_guess, current_guess)
     return best_guess
 
@@ -119,9 +123,9 @@ def quick_guess_single_byte_xor(ciphertext: bytes) -> Guess:
     frequencies = Counter(ciphertext)
     most_common_byte = frequencies.most_common(1)[0][0]
     common_chars = set(" etaoinshrdlu")
-    best_guess = Guess()
+    best_guess = Guess.empty()
     for char in common_chars:
-        current_guess = Guess.score_key(ciphertext, most_common_byte ^ ord(char))
+        current_guess = Guess(ciphertext, most_common_byte ^ ord(char))
         best_guess = min(best_guess, current_guess)
     return best_guess
 
