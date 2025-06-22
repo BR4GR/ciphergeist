@@ -11,16 +11,20 @@ class Guess:
     ciphertext: bytes
     plaintext: bytes
 
-    def __init__(self, ciphertext: bytes, key: int):
+    def __init__(self, ciphertext: bytes, key: int, is_empty: bool = False):
         self.ciphertext = ciphertext
         self.key = key
+        if is_empty:
+            self.plaintext = b""
+            self.score = float("inf")
+            return
         self.plaintext = single_byte_xor(ciphertext, key)
         self.score = score_text(self.plaintext)
 
     @classmethod
     def empty(cls) -> "Guess":
         """Create an empty guess with infinite score for comparison."""
-        return cls(b"", 0)
+        return cls(b"", 0, is_empty=True)
 
 
 def score_text(text: bytes) -> float:
