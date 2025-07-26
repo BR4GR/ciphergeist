@@ -137,4 +137,4 @@ def quick_guess_single_byte_xor(ciphertext: bytes) -> Guess:
 if __name__ == "__main__":
     ciphertext = bytes.fromhex("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
     guess = quick_guess_single_byte_xor(ciphertext)
-    print(f"Best guess: {guess.key}, Score: {guess.score} - {guess.plaintext.decode()}")
+    print(f"Quick guess: {guess.key}, Score: {guess.score} - {guess.plaintext.decode()}")
