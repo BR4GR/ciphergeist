@@ -1,6 +1,6 @@
 import pytest
 
-from ciphergeist.operations.xorxer import (
+from ciphergeist.encrypters.xorxer import (
     fixed_xor,
     guess_single_key_xor,
     quick_guess_single_byte_xor,

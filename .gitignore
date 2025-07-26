@@ -140,3 +140,4 @@ cython_debug/
 .idea/
 
 src/ciphergeist/books/
+output/
