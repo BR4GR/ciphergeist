@@ -1,7 +1,7 @@
 from collections import Counter
 from dataclasses import dataclass
 
-from ciphergeist.frequencies.lowercase import lowercase_frequencies
+from ciphergeist.frequencies.lowercase_frequencies import letter_frequencies as lowercase_frequencies
 
 
 @dataclass(order=True)
