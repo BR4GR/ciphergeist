@@ -38,7 +38,6 @@ class EnglishAnalyzer:
         """Initialize with optional custom frequency scoring function and normalization.
 
         Args:
-            frequency_scorer: Custom frequency scoring function (defaults to xorxer.score_text)
             normalize: Whether to normalize text before analysis (lowercase, reduce whitespace)
         """
         from ciphergeist.encrypters.xorxer import score_text
