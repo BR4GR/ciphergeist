@@ -9,7 +9,7 @@ copyright: Maintained by <a href="https://BR4GR.com">BR4GR</a>.
 
 nav:
   - Home: index.md
-  - Modules: modules.md
+  - Reference: reference/
   - Cryptopals:
     - Set 1:
       - 1. Convert hex to base64: cryptopals/set1_basics/1_convert_hex_to_base64.md
@@ -18,6 +18,11 @@ nav:
       - 4. Detect single-character XOR: cryptopals/set1_basics/4_detect_single_character_XOR.md
 plugins:
   - search
+  - gen-files:
+      scripts:
+        - scripts/gen_ref_pages.py
+  - literate-nav:
+      nav_file: SUMMARY.md
   - mkdocstrings:
       handlers:
         python:
