@@ -1,0 +1,139 @@
+/* Custom Cyberpunk Theme */
+
+/* Import a monospaced font */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+:root {
+  /* Primary Neon Colors */
+  --neon-pink: #ff2fd0;
+  --neon-blue: #00f7ff;
+  --neon-purple: #a400ff;
+
+  /* Accent & Highlight Colors */
+  --electric-red: #ff005e;
+  --vivid-cyan: #00d9ff;
+  --magenta-glow: #e600ff;
+
+  /* Backgrounds & Shadows */
+  --cyber-bg: #0b0c1b;
+  --city-glow-dark: #12142c;
+  --panel-overlay: rgba(18, 20, 44, 0.6);
+
+  /* Text Colors */
+  --text-light: #f0f0f0;
+  --text-dim: #aaaaaa;
+
+  /* Border & UI */
+  --border-neon: rgba(255, 47, 208, 0.6);
+  --input-glow: rgba(0, 247, 255, 0.3);
+}
+
+[data-md-color-scheme="slate"] {
+  --md-default-fg-color: var(--text-light);
+  --md-default-bg-color: var(--cyber-bg);
+  --md-primary-fg-color: var(--neon-blue);
+  --md-accent-fg-color: var(--neon-pink);
+}
+
+body {
+  font-family: 'Share Tech Mono', monospace;
+  background-color: var(--cyber-bg);
+}
+
+.md-header {
+  background-color: var(--city-glow-dark);
+  border-bottom: 1px solid var(--border-neon);
+}
+
+.md-tabs__link--active, .md-nav__link--active {
+  color: var(--neon-pink);
+  border-bottom-color: var(--neon-pink);
+}
+
+.md-code-block, pre {
+  border: 1px solid var(--border-neon);
+  border-radius: 5px;
+  background-color: var(--panel-overlay);
+  box-shadow: inset 0 0 10px var(--input-glow);
+}
+
+.md-code {
+  color: var(--neon-blue);
+  background-color: var(--city-glow-dark);
+  border: 1px solid var(--border-neon);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--neon-blue);
+  text-shadow: 0 0 5px var(--input-glow);
+}
+
+a {
+  color: var(--neon-pink);
+  text-decoration: none;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+
+a:hover {
+  color: var(--vivid-cyan);
+  text-shadow: 0 0 10px var(--input-glow);
+}
+
+/* Hero Section Styles */
+.hero-section {
+  position: relative;
+  text-align: center;
+  margin: 2rem 0;
+  background: linear-gradient(135deg, var(--cyber-bg) 0%, var(--city-glow-dark) 100%);
+  border-radius: 15px;
+  overflow: hidden;
+  border: 2px solid var(--border-neon);
+  box-shadow: 0 0 30px var(--input-glow);
+}
+
+.hero-image {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 10px;
+  filter: drop-shadow(0 0 20px var(--neon-pink));
+}
+
+.hero-content {
+  padding: 2rem;
+  background: rgba(11, 12, 27, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--neon-blue);
+  text-shadow: 0 0 20px var(--input-glow);
+  margin: 0;
+  letter-spacing: 0.2em;
+  animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  color: var(--neon-pink);
+  margin: 1rem 0 0 0;
+  text-shadow: 0 0 10px var(--border-neon);
+  font-style: italic;
+}
+
+@keyframes pulse-glow {
+  from { text-shadow: 0 0 20px var(--input-glow); }
+  to { text-shadow: 0 0 30px var(--input-glow), 0 0 40px var(--neon-blue); }
+}
+
+/* Badge improvements */
+img[alt*="Release"], img[alt*="Build"], img[alt*="Commit"], img[alt*="License"] {
+  margin: 0.2rem;
+  filter: brightness(1.1) contrast(1.2);
+}

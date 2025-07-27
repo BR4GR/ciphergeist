@@ -9,13 +9,14 @@ copyright: Maintained by <a href="https://BR4GR.com">BR4GR</a>.
 
 nav:
   - Home: index.md
-  - Reference: reference/
   - Cryptopals:
     - Set 1:
       - 1. Convert hex to base64: cryptopals/set1_basics/1_convert_hex_to_base64.md
       - 2. Fixed XOR: cryptopals/set1_basics/2_fixed_XOR.md
       - 3. Single-byte XOR cipher: cryptopals/set1_basics/3_single_byte_XOR_cipher.md
       - 4. Detect single-character XOR: cryptopals/set1_basics/4_detect_single_character_XOR.md
+  - Reference: reference/
+
 plugins:
   - search
   - gen-files:
@@ -29,6 +30,8 @@ plugins:
           paths: ["src/ciphergeist"]
 theme:
   name: material
+  logo: assets/hero.png
+  favicon: assets/hero.png
   feature:
     tabs: true
   palette:
@@ -55,6 +58,8 @@ extra:
       link: https://github.com/BR4GR/ciphergeist
     - icon: fontawesome/brands/python
       link: https://pypi.org/project/ciphergeist
+extra_css:
+  - stylesheets/extra.css
 
 markdown_extensions:
   - toc:
