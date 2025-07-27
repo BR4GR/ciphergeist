@@ -18,6 +18,8 @@ So go ahead and make that happen. You'll need to use this code for the rest of t
 Cryptopals Rule:
 Always operate on raw bytes, never on encoded strings. Only use hex and base64 for pretty-printing.
 
+## Solution
+
 ```python
 def convert_hex_to_base64(hex_string):
     """

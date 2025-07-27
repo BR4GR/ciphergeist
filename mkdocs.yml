@@ -34,20 +34,20 @@ theme:
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: white
-      accent: deep orange
+      primary: deep purple
+      accent: pink
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: black
-      accent: deep orange
+      accent: lime
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
   icon:
-    repo: fontawesome/brands/github
+    repo: fontawesome/solid/ghost
 
 extra:
   social:
@@ -61,3 +61,8 @@ markdown_extensions:
       permalink: true
   - pymdownx.arithmatex:
       generic: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences

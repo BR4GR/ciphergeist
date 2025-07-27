@@ -15,18 +15,6 @@ How? Devise some method for "scoring" a piece of English plaintext. Character fr
 
 ## Solution
 
-### Approach
-
-This challenge requires us to:
-1. Try all possible single-byte XOR keys (0-255)
-2. Decrypt the ciphertext with each key
-3. Score the resulting plaintext to determine which looks most like English
-4. Return the key and plaintext with the best score
-
-### Implementation
-
-The solution is implemented in `src/ciphergeist/encrypters/xorxer.py` with the following key components:
-
 #### 1. Single-byte XOR Function
 ```python
 def single_byte_xor(input_bytes: bytes, key: int) -> bytes:
