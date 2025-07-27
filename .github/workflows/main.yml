@@ -67,3 +67,17 @@ jobs:
 
       - name: Check if documentation can be built
         run: uv run mkdocs build -s
+
+  deploy-docs:
+    runs-on: ubuntu-latest
+    needs: [quality, tests-and-type-check, check-docs]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up the environment
+        uses: ./.github/actions/setup-python-env
+
+      - name: Deploy documentation
+        run: uv run mkdocs gh-deploy --force

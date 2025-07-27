@@ -1,1 +1,1 @@
-::: ciphergeist.operations.xorxer
+::: ciphergeist.encrypters.xorxer
