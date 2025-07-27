@@ -10,7 +10,12 @@ copyright: Maintained by <a href="https://BR4GR.com">BR4GR</a>.
 nav:
   - Home: index.md
   - Modules: modules.md
-  - Xorxer: xorxer.md
+  - Cryptopals:
+    - Set 1:
+      - 1. Convert hex to base64: cryptopals/set1_basics/1_convert_hex_to_base64.md
+      - 2. Fixed XOR: cryptopals/set1_basics/2_fixed_XOR.md
+      - 3. Single-byte XOR cipher: cryptopals/set1_basics/3_single_byte_XOR_cipher.md
+      - 4. Detect single-character XOR: cryptopals/set1_basics/4_detect_single_character_XOR.md
 plugins:
   - search
   - mkdocstrings:
