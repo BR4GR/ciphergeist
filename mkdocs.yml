@@ -56,8 +56,8 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/BR4GR/ciphergeist
-    - icon: fontawesome/brands/python
-      link: https://pypi.org/project/ciphergeist
+    # - icon: fontawesome/brands/python
+    #   link: https://pypi.org/project/ciphergeist
 extra_css:
   - stylesheets/extra.css
 
