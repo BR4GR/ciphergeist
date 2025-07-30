@@ -331,7 +331,7 @@ class Pixelator:
         image_array = np.array(image)
 
         # Flatten to bytes
-        data_bytes = image_array.flatten().tobytes()
+        data_bytes: bytes = image_array.flatten().tobytes()
 
         return data_bytes
 

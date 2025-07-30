@@ -49,9 +49,9 @@ class RSADecrypter:
         self.n = n
         self.e = e
         self.ciphertext = ciphertext
-        self.p = None
-        self.q = None
-        self.d = None
+        self.p: Optional[int] = None
+        self.q: Optional[int] = None
+        self.d: Optional[int] = None
         self.verbose = verbose
 
     def _extract_rsa_factors(self, data: dict) -> Optional[tuple[int, int]]:
@@ -168,7 +168,7 @@ class RSADecrypter:
         """
         print("Attempting Pollard's rho factorization...")
 
-        def f(x):
+        def f(x: int) -> int:
             return (x * x + 1) % self.n
 
         x = 2
@@ -266,15 +266,14 @@ class RSADecrypter:
 
         try:
             plaintext_int = pow(self.ciphertext, self.d, self.n)
-            plaintext_bytes = long_to_bytes(plaintext_int)
-            if self.verbose:
-                print(f"Decrypted message: {plaintext_bytes}")
-                return plaintext_bytes
-            else:
-                return plaintext_bytes
+            plaintext_bytes: bytes = long_to_bytes(plaintext_int)
         except Exception as e:
             print(f"Decryption failed: {e}")
             return None
+        else:
+            if self.verbose:
+                print(f"Decrypted message: {plaintext_bytes!r}")
+            return plaintext_bytes
 
     def small_exponent_attack(self) -> Optional[bytes]:
         """Attempt small exponent attack (when e is small and message^e < n).
@@ -293,11 +292,11 @@ class RSADecrypter:
 
             if pow(potential_message, self.e) == self.ciphertext:
                 try:
-                    plaintext_bytes = long_to_bytes(potential_message)
+                    plaintext_bytes: bytes = long_to_bytes(potential_message)
                 except (ValueError, OverflowError):
                     continue
                 else:
-                    print(f"Small exponent attack successful: {plaintext_bytes}")
+                    print(f"Small exponent attack successful: {plaintext_bytes!r}")
                     return plaintext_bytes
 
         print("Small exponent attack failed")
