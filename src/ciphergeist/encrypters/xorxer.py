@@ -134,7 +134,68 @@ def quick_guess_single_byte_xor(ciphertext: bytes) -> Guess:
     return best_guess
 
 
+def find_minimal_pattern(data: bytes) -> bytes:
+    """Find the shortest repeating pattern in the data.
+
+    Args:
+        data (bytes): The data to analyze for repeating patterns.
+
+    Returns:
+        bytes: The shortest repeating pattern, or the original data if no pattern found.
+    """
+    if not data:
+        return data
+
+    for pattern_len in range(1, len(data) // 2 + 1):
+        pattern = data[:pattern_len]
+        is_repeating = True
+        for i in range(len(data)):
+            if data[i] != pattern[i % pattern_len]:
+                is_repeating = False
+                break
+        if is_repeating:
+            return pattern
+
+    return data
+
+
+def derive_xor_key(ciphertext: bytes, known_plaintext: bytes) -> bytes:
+    """Derive the XOR key from known plaintext and ciphertext.
+
+    The known plaintext can be shorter than the ciphertext. This function
+    will derive the repeating key pattern and return the minimal key.
+
+    Args:
+        ciphertext (bytes): The encrypted data.
+        known_plaintext (bytes): The known plaintext (can be shorter than ciphertext).
+
+    Returns:
+        bytes: The minimal repeating XOR key.
+
+    Raises:
+        ValueError: If known_plaintext is longer than ciphertext.
+    """
+    if len(known_plaintext) > len(ciphertext):
+        raise ValueError("Known plaintext cannot be longer than ciphertext")
+
+    raw_key = fixed_xor(ciphertext[: len(known_plaintext)], known_plaintext)
+
+    return find_minimal_pattern(raw_key)
+
+
 if __name__ == "__main__":
-    ciphertext = bytes.fromhex("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
-    guess = quick_guess_single_byte_xor(ciphertext)
-    print(f"Quick guess: {guess.key}, Score: {guess.score} - {guess.plaintext.decode()}")
+    example_ciphertext = b"\x8c\x9c\x9b\xa4\xa7\xef\xad\x80\xbd\xad\xaa\xab\xec\x80\xec\xe6\xbd\xba\xef\xed\xb9\xb9\xa2"
+    example_plaintext = b"SCD{"
+
+    derived_key = derive_xor_key(example_ciphertext, example_plaintext)
+    print(f"Derived key: {derived_key!r}")
+    print(f"Key as hex: {derived_key.hex()}")
+    print(f"Key length: {len(derived_key)} bytes")
+
+    if len(derived_key) == 1:
+        decrypted = single_byte_xor(example_ciphertext, derived_key[0])
+        print(f"Decrypted (single-byte): {decrypted!r}")
+    else:
+        extended_key = (derived_key * ((len(example_ciphertext) // len(derived_key)) + 1))[: len(example_ciphertext)]
+        decrypted = fixed_xor(example_ciphertext, extended_key)
+        print(f"Decrypted (multi-byte): {decrypted!r}")

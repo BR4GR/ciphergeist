@@ -1,23 +1,27 @@
-from Crypto.Util.number import bytes_to_long, getPrime, inverse
+import random
+from typing import cast
 
-flag = b"SCD{f4k3_fl4g}"
+from pwn import xor
 
-p = getPrime(1024)
-q = 7
+from ciphergeist.encrypters.xorxer import derive_xor_key, single_byte_xor
 
-n = p * q
 
-e = e = 65537
+def gen_key() -> int:
+    KEY_128_BIT = 128 % 15
+    KEY = random.getrandbits(KEY_128_BIT)
+    return KEY
 
-phi = (p - 1) * (q - 1)
-d = inverse(e, phi)
 
-flag_int = bytes_to_long(flag)
-ciphertext = pow(flag_int, e, n)
+def encrypt(message: bytes) -> bytes:
+    KEY = gen_key()
+    return cast(bytes, xor(message, KEY))
 
-print(f"Public modulus (n): {n}")
-print(f"Public exponent (e): {e}")
-print(f"Encrypted flag: {ciphertext}")
 
-decrypt = pow(ciphertext, d, n)
-# print(long_to_bytes(decrypt))
+ciphertext = b"\x8c\x9c\x9b\xa4\xa7\xef\xad\x80\xbd\xad\xaa\xab\xec\x80\xec\xe6\xbd\xba\xef\xed\xb9\xb9\xa2"
+known_plaintext = b"SCD{"
+
+key = derive_xor_key(ciphertext, known_plaintext)
+print(f"Key: {key[0]}")
+
+decrypted = single_byte_xor(ciphertext, key[0])
+print(f"Decrypted: {decrypted!r}")
