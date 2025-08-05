@@ -6,7 +6,38 @@ including statistical confidence measures, multiple scoring metrics, and
 automatic text normalization for better accuracy.
 """
 
+from collections import Counter
 from dataclasses import dataclass
+
+from ciphergeist.frequencies.lowercase_frequencies import letter_frequencies as lowercase_frequencies
+
+
+def score_text(text: bytes) -> float:
+    """Score a byte string based on letter frequency analysis.
+
+    This function compares the frequency of letters in the text against
+    a predefined frequency distribution of lowercase letters in English text.
+
+    Args:
+        text (bytes): The byte string to score.
+
+    Returns:
+        float: The score representing the difference in letter frequencies.
+            A lower score indicates a closer match to expected frequencies.
+    """
+    if len(text) == 0:
+        raise ValueError("Input text cannot be empty")
+    counts_text: Counter[str] = Counter()
+    for letter in lowercase_frequencies:
+        counts_text[letter] = text.count(letter.encode())
+    total = sum(counts_text.values())
+    if total == 0:
+        return float("inf")
+
+    frequencies_text = {letter: counts_text[letter] / total for letter in lowercase_frequencies}
+    errors = {abs(lowercase_frequencies[letter] - frequencies_text[letter]) for letter in lowercase_frequencies}
+    score = sum(errors)
+    return score
 
 
 @dataclass
@@ -40,8 +71,6 @@ class EnglishAnalyzer:
         Args:
             normalize: Whether to normalize text before analysis (lowercase, reduce whitespace)
         """
-        from ciphergeist.encrypters.xorxer import score_text
-
         self.frequency_scorer = score_text
         self.normalize = normalize
 

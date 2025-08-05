@@ -1,4 +1,3 @@
-
 # Single-byte XOR cipher
 
 The hex encoded string:

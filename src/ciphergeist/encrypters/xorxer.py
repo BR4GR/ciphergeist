@@ -1,7 +1,11 @@
 from collections import Counter
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
-from ciphergeist.frequencies.lowercase_frequencies import letter_frequencies as lowercase_frequencies
+from ciphergeist.analyzers.text_analyzer import score_text
+
+if TYPE_CHECKING:
+    from ciphergeist.analyzers.text_analyzer import TextAnalysisResult
 
 
 @dataclass(order=True)
@@ -25,34 +29,6 @@ class Guess:
     def empty(cls) -> "Guess":
         """Create an empty guess with infinite score for comparison."""
         return cls(b"", 0, is_empty=True)
-
-
-def score_text(text: bytes) -> float:
-    """Score a byte string based on letter frequency analysis.
-
-    This function compares the frequency of letters in the text against
-    a predefined frequency distribution of lowercase letters in English text.
-
-    Args:
-        text (bytes): The byte string to score.
-
-    Returns:
-        float: The score representing the difference in letter frequencies.
-            A lower score indicates a closer match to expected frequencies.
-    """
-    if len(text) == 0:
-        raise ValueError("Input text cannot be empty")
-    counts_text: Counter[str] = Counter()
-    for letter in lowercase_frequencies:
-        counts_text[letter] = text.count(letter.encode())
-    total = sum(counts_text.values())
-    if total == 0:
-        return float("inf")
-
-    frequencies_text = {letter: counts_text[letter] / total for letter in lowercase_frequencies}
-    errors = {abs(lowercase_frequencies[letter] - frequencies_text[letter]) for letter in lowercase_frequencies}
-    score = sum(errors)
-    return score
 
 
 def fixed_xor(a: bytes, b: bytes) -> bytes:
@@ -181,6 +157,36 @@ def derive_xor_key(ciphertext: bytes, known_plaintext: bytes) -> bytes:
     raw_key = fixed_xor(ciphertext[: len(known_plaintext)], known_plaintext)
 
     return find_minimal_pattern(raw_key)
+
+
+def guess_single_byte_xor_with_english_analysis(
+    ciphertext: bytes, normalize: bool = False
+) -> tuple["Guess", "TextAnalysisResult"]:
+    """Guess single-byte XOR key and analyze result for English content.
+
+    This combines XOR cryptanalysis with natural language detection,
+    useful for automatically identifying English plaintext.
+
+    Args:
+        ciphertext (bytes): The ciphertext to analyze.
+        normalize (bool): Whether to normalize the analysis (to lowercase and reduce whitespace).
+
+    Returns:
+        tuple[Guess, TextAnalysisResult]: The best XOR guess and English analysis.
+
+    Note:
+        Requires the text_analyzer module to be available for English detection.
+    """
+    from ciphergeist.analyzers.text_analyzer import EnglishAnalyzer
+
+    # Get the best XOR guess
+    best_guess = guess_single_key_xor(ciphertext)
+
+    # Analyze how English-like the decrypted text is
+    analyzer = EnglishAnalyzer(normalize=normalize)
+    analysis_result = analyzer.analyze(best_guess.plaintext)
+
+    return best_guess, analysis_result
 
 
 if __name__ == "__main__":

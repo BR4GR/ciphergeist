@@ -1,27 +1,50 @@
-import random
-from typing import cast
+#!/usr/bin/env python3
+"""
+Cryptopals Challenge 4: Detect single-character XOR
+Simple script to find the English text among hex-encoded ciphertext lines.
+"""
 
-from pwn import xor
+from pathlib import Path
 
-from ciphergeist.encrypters.xorxer import derive_xor_key, single_byte_xor
-
-
-def gen_key() -> int:
-    KEY_128_BIT = 128 % 15
-    KEY = random.getrandbits(KEY_128_BIT)
-    return KEY
+from ciphergeist.encrypters.xorxer import guess_single_byte_xor_with_english_analysis
 
 
-def encrypt(message: bytes) -> bytes:
-    KEY = gen_key()
-    return cast(bytes, xor(message, KEY))
+def main() -> None:
+    input_file = Path("docs/cryptopals/inputs/set1_basics/4.txt")
+
+    if not input_file.exists():
+        print(f"Error: Input file not found at {input_file}")
+        return
+
+    best_result = None
+    best_probability = 0.0
+
+    with open(input_file) as f:
+        for line_num, line in enumerate(f, 1):
+            line = line.strip()
+            if not line:
+                continue
+
+            try:
+                ciphertext = bytes.fromhex(line)
+                guess, analysis = guess_single_byte_xor_with_english_analysis(ciphertext)
+
+                if analysis.english_probability > best_probability:
+                    best_probability = analysis.english_probability
+                    best_result = (line_num, guess, analysis)
+
+            except ValueError:
+                print(f"Warning: Could not decode line {line_num}")
+
+    if best_result:
+        line_num, guess, analysis = best_result
+        print(f"Found English text on line {line_num}:")
+        print(f"Text: '{guess.plaintext.decode('utf-8', errors='replace').strip()}'")
+        print(f"XOR Key: {guess.key} (0x{guess.key:02x})")
+        print(f"English Probability: {analysis.english_probability:.1%}")
+    else:
+        print("No English text found!")
 
 
-ciphertext = b"\x8c\x9c\x9b\xa4\xa7\xef\xad\x80\xbd\xad\xaa\xab\xec\x80\xec\xe6\xbd\xba\xef\xed\xb9\xb9\xa2"
-known_plaintext = b"SCD{"
-
-key = derive_xor_key(ciphertext, known_plaintext)
-print(f"Key: {key[0]}")
-
-decrypted = single_byte_xor(ciphertext, key[0])
-print(f"Decrypted: {decrypted!r}")
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,17 @@
+{
+  "include": [
+    "src",
+    "examples",
+    "tests"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__",
+    ".venv"
+  ],
+  "extraPaths": [
+    "./src"
+  ],
+  "pythonVersion": "3.11",
+  "pythonPlatform": "Linux"
+}
