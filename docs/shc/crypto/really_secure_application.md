@@ -1,4 +1,6 @@
-# Description
+# Really Secure Encryption
+
+## Description
 We recently had an intern around before the crisis happened. He learned about cryptography and encrypted the password for our coffee machine???
 
 We can't get through this without coffee.

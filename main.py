@@ -1,50 +1,5 @@
-#!/usr/bin/env python3
-"""
-Cryptopals Challenge 4: Detect single-character XOR
-Simple script to find the English text among hex-encoded ciphertext lines.
-"""
+binary_flag = "111001101101000011000110011001000110000001100100011010001111011010011110110110001100100010111110101011001100101011011100110111101101110011000010101111101001000011000010110010001011111010000010101111101001011010001010101100101011111010001010110010101101001011001010110010101101001011011110110100001111101"
+flag_int = int(binary_flag, 2)
+flag_bytes = flag_int.to_bytes((flag_int.bit_length() + 7) // 8, "big")
 
-from pathlib import Path
-
-from ciphergeist.encrypters.xorxer import guess_single_byte_xor_with_english_analysis
-
-
-def main() -> None:
-    input_file = Path("docs/cryptopals/inputs/set1_basics/4.txt")
-
-    if not input_file.exists():
-        print(f"Error: Input file not found at {input_file}")
-        return
-
-    best_result = None
-    best_probability = 0.0
-
-    with open(input_file) as f:
-        for line_num, line in enumerate(f, 1):
-            line = line.strip()
-            if not line:
-                continue
-
-            try:
-                ciphertext = bytes.fromhex(line)
-                guess, analysis = guess_single_byte_xor_with_english_analysis(ciphertext)
-
-                if analysis.english_probability > best_probability:
-                    best_probability = analysis.english_probability
-                    best_result = (line_num, guess, analysis)
-
-            except ValueError:
-                print(f"Warning: Could not decode line {line_num}")
-
-    if best_result:
-        line_num, guess, analysis = best_result
-        print(f"Found English text on line {line_num}:")
-        print(f"Text: '{guess.plaintext.decode('utf-8', errors='replace').strip()}'")
-        print(f"XOR Key: {guess.key} (0x{guess.key:02x})")
-        print(f"English Probability: {analysis.english_probability:.1%}")
-    else:
-        print("No English text found!")
-
-
-if __name__ == "__main__":
-    main()
+print(flag_bytes.decode())

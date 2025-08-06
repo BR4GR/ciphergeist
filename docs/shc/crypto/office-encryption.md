@@ -8,6 +8,8 @@ Please add the encryption program I made to every software we had so we are secu
 ## Author
 xnull
 
+## Solution
+
 cyphertext:
 ```
 swo2024{jytmm_ruvs_opgbzu_mum}
