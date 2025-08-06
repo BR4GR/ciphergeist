@@ -11,10 +11,21 @@ nav:
   - Home: index.md
   - Cryptopals:
     - Set 1:
-      - 1. Convert hex to base64: cryptopals/set1_basics/1_convert_hex_to_base64.md
-      - 2. Fixed XOR: cryptopals/set1_basics/2_fixed_XOR.md
-      - 3. Single-byte XOR cipher: cryptopals/set1_basics/3_single_byte_XOR_cipher.md
-      - 4. Detect single-character XOR: cryptopals/set1_basics/4_detect_single_character_XOR.md
+      - 1. Convert hex to base64: cryptopals/set1_basics/1-convert-hex-to-base64.md
+      - 2. Fixed XOR: cryptopals/set1_basics/2-fixed-XOR.md
+      - 3. Single-byte XOR cipher: cryptopals/set1_basics/3-single-byte-XOR-cipher.md
+      - 4. Detect single-character XOR: cryptopals/set1_basics/4-detect-single-character-XOR.md
+      - 5. Implement repeating-key XOR: cryptopals/set1_basics/5-implement-repeating-key-XOR.md
+  - SHC Challenges:
+    - Crypto:
+      - CRY-205: shc/crypto/cry-205.md
+      - Farm Life: shc/crypto/farm-life.md
+      - HSB: shc/crypto/hsb.md
+      - Office Encryption: shc/crypto/office-encryption.md
+      - Really Secure Application: shc/crypto/really-secure-application.md
+      - XOXO: shc/crypto/xoxo.md
+    - Web:
+      - Calculator: shc/web/calculator.md
   - Reference: reference/
 
 plugins:
