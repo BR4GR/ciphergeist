@@ -67,6 +67,33 @@ def single_byte_xor(input_bytes: bytes, key: int) -> bytes:
     return bytes(b ^ key for b in input_bytes)
 
 
+def repeating_key_xor(plaintext: bytes, key: bytes) -> bytes:
+    """Perform repeating-key XOR encryption/decryption.
+
+    XORs the plaintext with a key that repeats cyclically.
+    Since XOR is symmetric, this function works for both encryption and decryption.
+
+    Args:
+        plaintext (bytes): The data to encrypt/decrypt.
+        key (bytes): The key to repeat cyclically.
+
+    Returns:
+        bytes: The encrypted/decrypted data.
+
+    Raises:
+        ValueError: If the key is empty.
+    """
+    if not key:
+        raise ValueError("Key cannot be empty")
+
+    result = bytearray()
+    for i, byte in enumerate(plaintext):
+        key_byte = key[i % len(key)]
+        result.append(byte ^ key_byte)
+
+    return bytes(result)
+
+
 def guess_single_key_xor(ciphertext: bytes) -> Guess:
     """Guess the single-byte XOR key for a given ciphertext.
 

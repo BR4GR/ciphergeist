@@ -15,3 +15,33 @@ It should come out to:
 a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f
 ```
 Encrypt a bunch of stuff using your repeating-key XOR function. Encrypt your mail. Encrypt your password file. Your .sig file. Get a feel for it. I promise, we aren't wasting your time with this.
+
+## Solution
+
+```python
+def repeating_key_xor(plaintext: bytes, key: bytes) -> bytes:
+    """Perform repeating-key XOR encryption/decryption.
+
+    XORs the plaintext with a key that repeats cyclically.
+    Since XOR is symmetric, this function works for both encryption and decryption.
+
+    Args:
+        plaintext (bytes): The data to encrypt/decrypt.
+        key (bytes): The key to repeat cyclically.
+
+    Returns:
+        bytes: The encrypted/decrypted data.
+
+    Raises:
+        ValueError: If the key is empty.
+    """
+    if not key:
+        raise ValueError("Key cannot be empty")
+
+    result = bytearray()
+    for i, byte in enumerate(plaintext):
+        key_byte = key[i % len(key)]
+        result.append(byte ^ key_byte)
+
+    return bytes(result)
+```
